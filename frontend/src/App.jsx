@@ -1,9 +1,29 @@
-import React from 'react'
+import React from "react";
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+
+import MainLayout from "./layouts/MainLayout";
+import HomePage from "./pages/HomePage";
+import RegisterUserPage from "./pages/RegisterUserPage";
 
 const App = () => {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/Sign-up" element={<RegisterUserPage />} />
+      </Route>
+    )
+  );
   return (
-    <div>App</div>
-  )
-}
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
+};
 
-export default App
+export default App;
