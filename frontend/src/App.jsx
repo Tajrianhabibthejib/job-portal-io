@@ -9,6 +9,7 @@ import {
 import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
 import RegisterUserPage from "./pages/RegisterUserPage";
+import LoginUserPage from "./pages/LoginUserPage";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -16,6 +17,7 @@ const App = () => {
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/Sign-up" element={<RegisterUserPage />} />
+        <Route path="/log-in" element={<LoginUserPage />} />
       </Route>
     )
   );
