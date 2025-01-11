@@ -12,6 +12,7 @@ app.use(
     origin: "http://localhost:5173", // Your React app's URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"], // Ensure 'Authorization' is allowed if you're passing JWT tokens
+    credentials: true,
   })
 );
 
