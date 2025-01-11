@@ -1,10 +1,12 @@
 const { body } = require("express-validator");
 
 const registerValidate = [
-  // Username validation: Should be alphanumeric, at least 3 characters long, and no spaces allowed
+  // Username validation: Should contain at least one letter and may include numbers, no spaces allowed
   body("username")
-    .isAlphanumeric()
-    .withMessage("Username should contain only letters and numbers")
+    .matches(/^(?=.*[A-Za-z])[A-Za-z0-9]*$/)
+    .withMessage(
+      "Username must contain at least one letter and may contain numbers"
+    )
     .isLength({ min: 3 })
     .withMessage("Username must be at least 3 characters long")
     .notEmpty()
@@ -13,7 +15,7 @@ const registerValidate = [
     .withMessage("Username cannot contain spaces")
     .trim(),
 
-  // Email validation: Should be a valid email format, contain at least one alphabetic character, and not be purely numeric
+  // Enhanced Email validation
   body("email")
     .isEmail()
     .withMessage("Please provide a valid email address")
@@ -23,6 +25,20 @@ const registerValidate = [
     .withMessage("Email cannot be empty")
     .matches(/^(?!\d+@)[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/)
     .withMessage("Email cannot be purely numeric")
+    .isLength({ min: 8 }) // Sets a minimum length of 8 characters
+    .withMessage("Email must be at least 8 characters long")
+    .matches(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
+    .withMessage("Email format is invalid (e.g., example@domain.com)") // Standard email format check
+    .custom((value) => {
+      // Custom validation to ensure the email doesn't look like just a number followed by '@domain.com'
+      const regex = /^[A-Za-z0-9._%+-]{3,}@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      if (!regex.test(value)) {
+        throw new Error(
+          "Email must be more meaningful and cannot be purely numeric or too short."
+        );
+      }
+      return true;
+    })
     .normalizeEmail(),
 
   // Password validation: Should be at least 8 characters, include at least one letter, one number, one special character,
