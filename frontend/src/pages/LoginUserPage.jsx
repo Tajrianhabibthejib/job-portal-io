@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 const RegisterUserPage = () => {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -53,7 +52,7 @@ const RegisterUserPage = () => {
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl dark:bg-gray-800">
         <h2 className="mb-6 text-3xl font-bold text-center text-gray-800 dark:text-white">
-          Create Your Account
+          Login
         </h2>
 
         {error && (
@@ -68,23 +67,7 @@ const RegisterUserPage = () => {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-            >
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              className="w-full px-4 py-2 mt-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-              placeholder="Enter username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
+
 
           <div className="mb-4">
             <label
@@ -143,10 +126,10 @@ const RegisterUserPage = () => {
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Have an account?{" "}
             <button
-              onClick={() => navigate("/log-in")}
+              onClick={() => navigate("/sign-up")}
               className="text-blue-600 hover:underline dark:text-blue-400"
             >
-              Login
+              Sign Up
             </button>
           </p>
         </div>
