@@ -3,48 +3,35 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
-const RegisterUserPage = () => {
+const LoginUserPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
     try {
-      const user = { username, email, password };
+      const user = { email, password }; // Define the user object
 
-      const response = await axios.post(
-        "http://localhost:3000/user/register",
-        user,
-        { withCredentials: true }
+      // Make the POST request to your API
+      const res = await axios.post(
+        "http://localhost:3000/api/user/login",
+        user, // Send the user object in the request body
+        {
+          headers: {
+            "Content-Type": "application/json", // Set content type
+          },
+          withCredentials: true, // Enable sending cookies/credentials
+        }
       );
-      if (response.data.errors?.[0]?.msg) {
-        setError(response.data.errors[0].msg);
-        setMessage("");
-      } else if (response.data.message) {
-        setMessage(response.data.message);
-        setError("");
 
-        response.data.message === "Email or username already exists"
-          ? toast.error(response.data.message, {
-              position: "bottom-right",
-              autoClose: 5000,
-              theme: "light",
-            })
-          : toast.success(response.data.message, {
-              position: "bottom-right",
-              autoClose: 5000,
-              theme: "light",
-            });
-        navigate("/log-in");
+      if (res.data.success === true) {
+        toast.success(res.data.message);
       }
+      navigate("/jobs"); // Redirect to login page after successful registration
     } catch (error) {
-      console.error(error.message);
-      setError("An unexpected error occurred. Please try again.");
-      setMessage("");
+      toast.error(error.response.data.message);
     }
   };
 
@@ -55,20 +42,7 @@ const RegisterUserPage = () => {
           Login
         </h2>
 
-        {error && (
-          <div className="p-4 mb-4 text-sm text-red-800 bg-red-100 border border-red-400 rounded-lg dark:bg-red-900 dark:text-red-200">
-            {error}
-          </div>
-        )}
-        {message && (
-          <div className="p-4 mb-4 text-sm text-green-800 bg-green-100 border border-green-400 rounded-lg dark:bg-green-900 dark:text-green-200">
-            {message}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit}>
-
-
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -138,4 +112,4 @@ const RegisterUserPage = () => {
   );
 };
 
-export default RegisterUserPage;
+export default LoginUserPage;

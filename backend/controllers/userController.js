@@ -1,54 +1,100 @@
-const userModel = require("../models/userModel");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const { validationResult } = require("express-validator");
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import userModel from "../models/userModel.js";
 
-const registerUser = async (req, res) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.json({ errors: errors.array() });
-    }
-
-    const { username, email, password } = req.body;
-
-    const findUser = await userModel.findOne({
-      $or: [{ email }, { username }],
-    });
-    if (findUser) {
-      return res.json({
-        message: "Email or username already exists",
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await userModel.create({
-      username,
-      email,
-      password: hashedPassword,
-    });
-
-    const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-    });
-
-    return res.status(201).json({
-      message: "User created successfully",
-      token,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Server error",
-      error: error.message,
+export const registerUser = async (req, res) => {
+  const { username, email, password } = req.body;
+  if (!username || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide all fields",
     });
   }
+  const findUser = await userModel.findOne({ email });
+  if (findUser) {
+    return res.status(400).json({
+      success: false,
+      message: "User already exists!",
+    });
+  }
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await userModel.create({
+    username,
+    email,
+    password: hashedPassword,
+  });
+  const token = await jwt.sign(
+    {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    },
+    process.env.JWT_SECRET
+  );
+  res.cookie("token", token, {
+    httpOnly: true,
+  });
+  return res.status(200).json({
+    success: true,
+    message: "User created successfully!",
+  });
 };
 
-module.exports = {
-  registerUser,
+export const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide all fields",
+    });
+  }
+  const findEmail = await userModel.findOne({ email });
+  if (!findEmail) {
+    return res.status(400).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  const isValidPassword = await bcrypt.compare(password, findEmail.password);
+  if (!isValidPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid password",
+    });
+  }
+  const token = await jwt.sign(
+    {
+      id: findEmail._id,
+      username: findEmail.username,
+      email: findEmail.email,
+    },
+    process.env.JWT_SECRET
+  );
+  res.cookie("token", token, {
+    httpOnly: true,
+  });
+  return res.status(200).json({
+    success: true,
+    message: "User logged in successfully!",
+  });
+};
+
+export const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "None", // Add this if you're testing on localhost with different ports
+      secure: true, // Add this if you're using HTTPS
+    });
+    return res.status(200).json({
+      success: true,
+      message: "User logged out successfully!",
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
 };

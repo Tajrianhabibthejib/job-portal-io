@@ -1,39 +1,35 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
+import database from "./config/database.js";
+database();
+
+import userRouter from "./routes/userRouter.js";
+import indexRouter from "./routes/indexRouter.js";
+
 const app = express();
-require("dotenv").config();
 
-const port = process.env.PORT || 3000; // Default to 3000 if PORT is not defined
+// CORS configuration
+const corsOptions = {
+  origin: ["http://localhost:5173"], // Replace with your allowed domain(s)
+  credentials: true, // Enable this if you need to send cookies or authentication tokens
+};
 
+// Middleware setup
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(cors(corsOptions)); // Use configured CORS options
 
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Your React app's URL
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"], // Ensure 'Authorization' is allowed if you're passing JWT tokens
-    credentials: true,
-  })
-);
+app.use("/api/user", userRouter);
+app.use("/", indexRouter);
 
-const database = require("./config/database");
+const port = process.env.PORT || 3000;
 
-// Initialize the database and handle potential errors
-database().catch((err) => {
-  console.error("Database connection failed:", err);
-  process.exit(1); // Exit the application if the database connection fails
+app.listen(port, async () => {
+  console.log(`Server listening on port ${port}`);
 });
 
-const userRouter = require("./routes/userRouter");
-app.use("/user", userRouter);
-
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send({ message: "Internal Server Error" });
-});
-
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+export default app;

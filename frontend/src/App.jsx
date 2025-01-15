@@ -10,6 +10,7 @@ import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
 import RegisterUserPage from "./pages/RegisterUserPage";
 import LoginUserPage from "./pages/LoginUserPage";
+import JobsPage from "./pages/JobsPage";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/Sign-up" element={<RegisterUserPage />} />
         <Route path="/log-in" element={<LoginUserPage />} />
+        <Route path="/jobs" element={<JobsPage />} />
       </Route>
     )
   );
