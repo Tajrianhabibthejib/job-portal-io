@@ -10,12 +10,18 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    salary: {},
+    salary: {
+      type: String,
+      required: true,
+    },
     category: {
       type: String,
       required: true,
     },
     company: {
+      companyImage: {
+        type: Buffer,
+      },
       companyName: {
         type: String,
         required: true,
