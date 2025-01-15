@@ -1,8 +1,13 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
+import { validationResult } from "express-validator";
 
 export const registerUser = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ success: false, errors: errors.array() });
+  }
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
     return res.status(400).json({
