@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Navbar from "../components/Navbar";
 
 const JobsPage = () => {
+  const [jobs, setJobs] = React.useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     const getResponse = async () => {
@@ -12,6 +12,7 @@ const JobsPage = () => {
         const res = await axios.get("http://localhost:3000/jobs", {
           withCredentials: true,
         });
+        setJobs(res.data.job);
       } catch (error) {
         toast.error(error.response.data.message);
         navigate("/log-in");
@@ -23,10 +24,18 @@ const JobsPage = () => {
   return (
     <>
       <section className="min-h-screen p-8 bg-gradient-to-b from-blue-50 to-gray-100">
+        <div className="flex justify-end mb-3">
+          <p>
+            Want to post a Job? Visit{" "}
+            <Link className="font-semibold text-blue-500" to={"/create-job"}>
+              Create Job Page
+            </Link>
+          </p>
+        </div>
         <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-          {[1, 2, 3, 4, 5].map((item) => (
+          {jobs.map((element, index) => (
             <article
-              key={item}
+              key={index}
               className="p-6 transition-shadow duration-300 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl dark:bg-gray-800 dark:border-gray-700"
             >
               <div className="flex items-center justify-between mb-5 text-gray-500">
@@ -39,19 +48,17 @@ const JobsPage = () => {
                   >
                     <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
                   </svg>
-                  Tutorial
+                  {element.category}
                 </span>
                 <span className="text-sm">14 days ago</span>
               </div>
               <h2 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                 <a href="#" className="hover:underline">
-                  How to quickly deploy a static website
+                {element.title}
                 </a>
               </h2>
               <p className="mb-5 text-sm text-gray-500 dark:text-gray-400">
-                Static websites are now used to bootstrap lots of websites and
-                are becoming the basis for tools that influence both web
-                designers and developers.
+              {element.description}
               </p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
@@ -61,7 +68,7 @@ const JobsPage = () => {
                     alt="Jese Leos avatar"
                   />
                   <span className="text-sm font-medium text-gray-800 dark:text-white">
-                    Jese Leos
+                  {element.company.companyName}
                   </span>
                 </div>
                 <a

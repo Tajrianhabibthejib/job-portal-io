@@ -27,7 +27,6 @@ const LoginUserPage = () => {
       );
 
       navigate("/jobs");
-      toast.success(res.data.message);
       window.location.reload();
     } catch (error) {
       toast.error(error.response.data.message);
