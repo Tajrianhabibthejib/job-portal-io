@@ -6,8 +6,9 @@ dotenv.config();
 import database from "./config/database.js";
 database();
 
-import userRouter from "./routes/userRouter.js";
 import indexRouter from "./routes/indexRouter.js";
+import userRouter from "./routes/userRouter.js";
+import jobRouter from "./routes/jobRouter.js";
 
 const app = express();
 
@@ -23,8 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors(corsOptions)); // Use configured CORS options
 
-app.use("/api/user", userRouter);
 app.use("/", indexRouter);
+app.use("/api/user", userRouter);
+app.use("/api/job", jobRouter);
 
 const port = process.env.PORT || 3000;
 
