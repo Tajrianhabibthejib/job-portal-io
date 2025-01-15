@@ -8,6 +8,7 @@ const RegisterUserPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -32,6 +33,7 @@ const RegisterUserPage = () => {
       }
       navigate("/log-in"); // Redirect to login page after successful registration
     } catch (error) {
+      setError(error.response.data.errors[0].msg);
       toast.error(error.response.data.message);
     }
   };
@@ -106,6 +108,8 @@ const RegisterUserPage = () => {
               </button>
             </div>
           </div>
+
+          <p className="text-red-600">{error}</p>
 
           <button
             type="submit"

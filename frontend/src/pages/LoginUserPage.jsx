@@ -26,10 +26,9 @@ const LoginUserPage = () => {
         }
       );
 
-      if (res.data.success === true) {
-        toast.success(res.data.message);
-      }
-      navigate("/jobs"); // Redirect to login page after successful registration
+      navigate("/jobs");
+      toast.success(res.data.message);
+      window.location.reload();
     } catch (error) {
       toast.error(error.response.data.message);
     }

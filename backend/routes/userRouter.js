@@ -5,8 +5,9 @@ import {
   registerUser,
 } from "../controllers/userController.js";
 const router = express.Router();
+import userValidate from "../middlewares/userMiddleware.js";
 
-router.post("/register", registerUser);
+router.post("/register", userValidate, registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 

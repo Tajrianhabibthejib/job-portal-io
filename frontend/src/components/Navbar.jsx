@@ -19,9 +19,7 @@ const Navbar = () => {
         } else if (res.data.message === false) {
           setIsLoggedIn(false);
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
     getToken();
   }, []);
