@@ -14,12 +14,14 @@ import JobsPage from "./pages/JobsPage";
 import CreateJobPage from "./pages/CreateJobPage";
 import ErrorPage from "./pages/errorPage";
 import ReadMorePage from "./pages/ReadMorePage";
+import AboutPage from "./pages/AboutPage";
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/Sign-up" element={<RegisterUserPage />} />
         <Route path="/log-in" element={<LoginUserPage />} />
         <Route path="/create-job" element={<CreateJobPage />} />

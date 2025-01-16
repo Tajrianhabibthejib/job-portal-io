@@ -18,9 +18,10 @@ const JobsPage = () => {
           withCredentials: true,
         });
         setJobs(res.data.job);
+        // setJobs(res)
       } catch (error) {
         toast.error(error.response.data.message);
-        navigate("/log-in");
+        navigate("/log-in", { replace: true }); // Use replace option here
       }
     };
     getResponse();
@@ -82,7 +83,10 @@ const JobsPage = () => {
                 </span>
               </div>
               <h2 className="mb-2 text-xl font-semibold text-gray-900">
-                <Link to={`/jobs/read-more/${element._id}`} className="transition-all hover:text-blue-600">
+                <Link
+                  to={`/jobs/read-more/${element._id}`}
+                  className="transition-all hover:text-blue-600"
+                >
                   {element.title}
                 </Link>
               </h2>

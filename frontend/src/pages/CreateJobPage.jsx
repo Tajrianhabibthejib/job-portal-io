@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -34,6 +34,20 @@ const CreateJobPage = () => {
     "Mexico",
     "South Africa",
   ];
+
+  useEffect(() => {
+    const getResponse = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/", {
+          withCredentials: true,
+        });
+      } catch (error) {
+        toast.error(error.response.data.message);
+        navigate("/log-in", { replace: true }); // Use replace option here
+      }
+    };
+    getResponse();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
