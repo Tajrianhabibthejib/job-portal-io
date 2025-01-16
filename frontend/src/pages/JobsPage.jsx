@@ -2,10 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
 
 const JobsPage = () => {
-  const [jobs, setJobs] = React.useState([]);
+  const [jobs, setJobs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [jobsPerPage] = useState(6); // Number of jobs per page
+  const [maxPageButtons] = useState(5); // Max number of pagination buttons
   const navigate = useNavigate();
+
   useEffect(() => {
     const getResponse = async () => {
       try {
@@ -21,6 +26,28 @@ const JobsPage = () => {
     getResponse();
   }, []);
 
+  const totalPages = Math.ceil(jobs.length / jobsPerPage);
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+
+  // Handles page change
+  const paginate = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
+  // Calculate range of page numbers to display
+  const getPaginationRange = () => {
+    const startPage = Math.max(currentPage - Math.floor(maxPageButtons / 2), 1);
+    const endPage = Math.min(startPage + maxPageButtons - 1, totalPages);
+    return Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+  };
+
   return (
     <>
       <section className="min-h-screen p-8 bg-gradient-to-b from-blue-50 to-gray-100">
@@ -33,13 +60,13 @@ const JobsPage = () => {
           </p>
         </div>
         <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-          {jobs.map((element, index) => (
+          {currentJobs.map((element, index) => (
             <article
               key={index}
-              className="p-6 transition-shadow duration-300 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl dark:bg-gray-800 dark:border-gray-700"
+              className="p-6 transition-all duration-300 transform bg-white rounded-lg shadow-md hover:scale-105 hover:shadow-lg"
             >
               <div className="flex items-center justify-between mb-5 text-gray-500">
-                <span className="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
+                <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-lg">
                   <svg
                     className="w-3 h-3 mr-1"
                     fill="currentColor"
@@ -50,30 +77,32 @@ const JobsPage = () => {
                   </svg>
                   {element.category}
                 </span>
-                <span className="text-sm">14 days ago</span>
+                <span className="text-sm text-gray-400">
+                  {dayjs(element.createdAt).format("MMMM D, YYYY")}
+                </span>
               </div>
-              <h2 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                <a href="#" className="hover:underline">
-                {element.title}
-                </a>
+              <h2 className="mb-2 text-xl font-semibold text-gray-900">
+                <Link to={`/jobs/read-more/${element._id}`} className="transition-all hover:text-blue-600">
+                  {element.title}
+                </Link>
               </h2>
-              <p className="mb-5 text-sm text-gray-500 dark:text-gray-400">
-              {element.description}
+              <p className="mb-5 text-sm text-gray-600">
+                {element.description}
               </p>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mt-4">
                 <div className="flex items-center space-x-4">
                   <img
-                    className="w-8 h-8 rounded-full"
+                    className="w-10 h-10 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
-                    alt="Jese Leos avatar"
+                    alt="Company avatar"
                   />
-                  <span className="text-sm font-medium text-gray-800 dark:text-white">
-                  {element.company.companyName}
+                  <span className="text-sm font-medium text-gray-800">
+                    {element.company.companyName}
                   </span>
                 </div>
-                <a
-                  href="#"
-                  className="inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                <Link
+                  to={`/jobs/read-more/${element._id}`}
+                  className="inline-flex items-center text-sm font-medium text-blue-600 transition-all hover:underline"
                 >
                   Read more
                   <svg
@@ -88,10 +117,40 @@ const JobsPage = () => {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                </a>
+                </Link>
               </div>
             </article>
           ))}
+        </div>
+        {/* Pagination */}
+        <div className="flex justify-center mt-6 space-x-2">
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-200 rounded-lg disabled:opacity-50"
+          >
+            Previous
+          </button>
+          {getPaginationRange().map((number) => (
+            <button
+              key={number}
+              onClick={() => paginate(number)}
+              className={`px-4 py-2 text-sm font-medium rounded-lg ${
+                currentPage === number
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-600"
+              }`}
+            >
+              {number}
+            </button>
+          ))}
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-200 rounded-lg disabled:opacity-50"
+          >
+            Next
+          </button>
         </div>
       </section>
     </>
