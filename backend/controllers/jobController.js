@@ -63,3 +63,12 @@ export const createJob = async (req, res) => {
     });
   }
 };
+
+export const getJobs = async (req, res) => {
+  const { salary } = req.params;
+
+  const job = await jobModel.find({
+    salary: salary,
+  });
+  res.json({ job });
+};

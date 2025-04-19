@@ -3,13 +3,49 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import Select from "../components/Select";
+import {
+  salaryFilter,
+  categoryFilter,
+  companyOriginFilter,
+} from "../constants/Filter";
 
 const JobsPage = () => {
+  const [salary, setSalary] = useState("25,000+");
+  const [category, setCategory] = useState("Fresher");
+  const [companyOrigin, setCompanyOrigin] = useState(
+    "United States of America"
+  );
   const [jobs, setJobs] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [jobsPerPage] = useState(6); // Number of jobs per page
-  const [maxPageButtons] = useState(5); // Max number of pagination buttons
   const navigate = useNavigate();
+
+  const handleFilter = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.get(`http://localhost:3000/api/job/${salary}`, {
+        withCredentials: true,
+      });
+
+      console.log("Full API response:", res.data);
+
+      const jobsData = res.data.job; // <-- Extract the actual job object
+
+      // Check if jobsData is an array or an object and handle accordingly
+      if (Array.isArray(jobsData)) {
+        setJobs(jobsData);
+      } else if (jobsData) {
+        setJobs([jobsData]); // Wrap single job in array for consistent rendering
+      } else {
+        setJobs([]); // If no job data returned, set jobs as an empty array
+      }
+    } catch (error) {
+      console.log(error);
+      const errorMessage =
+        error?.response?.data?.message || "Failed to filter jobs.";
+      toast.error(errorMessage);
+      setJobs([]); // Reset the jobs if there was an error
+    }
+  };
 
   useEffect(() => {
     const getResponse = async () => {
@@ -17,53 +53,65 @@ const JobsPage = () => {
         const res = await axios.get("http://localhost:3000/jobs", {
           withCredentials: true,
         });
-        setJobs(res.data.job);
-        // setJobs(res)
+        const result = res.data.job;
+        console.log(result);
+        setJobs(Array.isArray(result) ? result : []);
       } catch (error) {
-        toast.error(error.response.data.message);
-        navigate("/log-in", { replace: true }); // Use replace option here
+        toast.error(error?.response?.data?.message || "Error loading jobs.");
+        navigate("/log-in", { replace: true });
       }
     };
     getResponse();
-  }, []);
-
-  const totalPages = Math.ceil(jobs.length / jobsPerPage);
-  const indexOfLastJob = currentPage * jobsPerPage;
-  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
-
-  // Handles page change
-  const paginate = (pageNumber) => {
-    if (pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
-    }
-  };
-
-  // Calculate range of page numbers to display
-  const getPaginationRange = () => {
-    const startPage = Math.max(currentPage - Math.floor(maxPageButtons / 2), 1);
-    const endPage = Math.min(startPage + maxPageButtons - 1, totalPages);
-    return Array.from(
-      { length: endPage - startPage + 1 },
-      (_, i) => startPage + i
-    );
-  };
+  }, [navigate]);
 
   return (
-    <>
-      <section className="min-h-screen p-8 bg-gradient-to-b from-blue-50 to-gray-100">
-        <div className="flex justify-end mb-3">
-          <p>
-            Want to post a Job? Visit{" "}
-            <Link className="font-semibold text-blue-500" to={"/create-job"}>
-              Create Job Page
-            </Link>
-          </p>
+    <section className="min-h-screen p-8 bg-gradient-to-b from-blue-50 to-gray-100">
+      <div className="container p-6 mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-900">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-8 lg:flex-nowrap">
+          {/* Filter Selects */}
+          <Select
+            filter={salaryFilter}
+            state={salary}
+            setState={setSalary}
+            className="w-full sm:min-w-[200px] bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <Select
+            filter={categoryFilter}
+            state={category}
+            setState={setCategory}
+            className="w-full sm:min-w-[200px] bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <Select
+            filter={companyOriginFilter}
+            state={companyOrigin}
+            setState={setCompanyOrigin}
+            className="w-full sm:min-w-[200px] bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {/* Filter Button */}
+          <button
+            type="submit"
+            onClick={handleFilter}
+            className="px-6 py-2 font-semibold text-white bg-blue-500 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-700 dark:hover:bg-blue-600 dark:focus:ring-blue-400"
+          >
+            Filter
+          </button>
         </div>
-        <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-          {currentJobs.map((element, index) => (
+      </div>
+
+      <div className="flex justify-end mb-3">
+        <p>
+          Want to post a Job? Visit{" "}
+          <Link className="font-semibold text-blue-500" to={"/create-job"}>
+            Create Job Page
+          </Link>
+        </p>
+      </div>
+
+      <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+        {Array.isArray(jobs) && jobs.length > 0 ? (
+          jobs.map((element) => (
             <article
-              key={index}
+              key={element._id}
               className="p-6 transition-all duration-300 transform bg-white rounded-lg shadow-md hover:scale-105 hover:shadow-lg"
             >
               <div className="flex items-center justify-between mb-5 text-gray-500">
@@ -76,7 +124,8 @@ const JobsPage = () => {
                   >
                     <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
                   </svg>
-                  {element.category}
+                  {element.category || "No Category"}{" "}
+                  {/* Fallback for missing category */}
                 </span>
                 <span className="text-sm text-gray-400">
                   {dayjs(element.createdAt).format("MMMM D, YYYY")}
@@ -101,7 +150,7 @@ const JobsPage = () => {
                     alt="Company avatar"
                   />
                   <span className="text-sm font-medium text-gray-800">
-                    {element.company.companyName}
+                    {element.company?.companyName || "Unknown Company"}
                   </span>
                 </div>
                 <Link
@@ -124,40 +173,14 @@ const JobsPage = () => {
                 </Link>
               </div>
             </article>
-          ))}
-        </div>
-        {/* Pagination */}
-        <div className="flex justify-center mt-6 space-x-2">
-          <button
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-200 rounded-lg disabled:opacity-50"
-          >
-            Previous
-          </button>
-          {getPaginationRange().map((number) => (
-            <button
-              key={number}
-              onClick={() => paginate(number)}
-              className={`px-4 py-2 text-sm font-medium rounded-lg ${
-                currentPage === number
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-600"
-              }`}
-            >
-              {number}
-            </button>
-          ))}
-          <button
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-200 rounded-lg disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
-      </section>
-    </>
+          ))
+        ) : (
+          <p className="text-center text-gray-500 col-span-full">
+            No jobs found.
+          </p>
+        )}
+      </div>
+    </section>
   );
 };
 

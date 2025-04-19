@@ -90,7 +90,7 @@ const LoginUserPage = () => {
             type="submit"
             className="w-full py-2 mt-4 text-sm font-medium text-white transition duration-300 bg-blue-600 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600"
           >
-            Register
+            Login
           </button>
         </form>
 
