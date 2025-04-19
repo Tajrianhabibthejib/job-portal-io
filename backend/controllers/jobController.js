@@ -65,10 +65,18 @@ export const createJob = async (req, res) => {
 };
 
 export const getJobs = async (req, res) => {
-  const { salary } = req.params;
+  const { salary, category, country } = req.params;
 
   const job = await jobModel.find({
     salary: salary,
+    category: category,
+    "company.companyOrigin": country, // Use dot notation for nested fields
   });
+  if (!job) {
+    return res.status(400).json({
+      success: false,
+      message: "No jobs found",
+    });
+  }
   res.json({ job });
 };

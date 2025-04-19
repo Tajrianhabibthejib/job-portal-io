@@ -38,6 +38,7 @@ router.get("/jobs", isAuthenticated, async (req, res, next) => {
   }
 });
 
+
 router.get("/jobs/read-more/:jobId", async (req, res) => {
   try {
     const { jobId } = req.params;

@@ -22,9 +22,12 @@ const JobsPage = () => {
   const handleFilter = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.get(`http://localhost:3000/api/job/${salary}`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `http://localhost:3000/api/job/salary/${salary}/category/${category}/country/${companyOrigin}`,
+        {
+          withCredentials: true,
+        }
+      );
 
       console.log("Full API response:", res.data);
 
@@ -175,7 +178,7 @@ const JobsPage = () => {
             </article>
           ))
         ) : (
-          <p className="text-center text-gray-500 col-span-full">
+          <p className="p-4 font-semibold text-center text-white bg-gray-600 rounded-md col-span-full">
             No jobs found.
           </p>
         )}

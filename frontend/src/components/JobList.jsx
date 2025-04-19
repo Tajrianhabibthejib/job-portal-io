@@ -55,7 +55,7 @@ const JobList = ({ jobs }) => {
                   </span>
                 </div>
                 <a
-                  href="#"
+                  href={`/jobs/read-more/${element._id}`}
                   className="inline-flex items-center text-sm font-medium text-blue-600 transition-all hover:underline"
                 >
                   Read more

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { categoryFilter } from "../constants/Filter";
 
 const CreateJobPage = () => {
   const [jobTitle, setJobTitle] = useState("");
@@ -163,10 +164,11 @@ const CreateJobPage = () => {
                 onChange={(e) => setCategory(e.target.value)}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               >
-                <option value="Fresher">Fresher</option>
-                <option value="2+ Experience">2+ Experience</option>
-                <option value="4+ Experience">4+ Experience</option>
-                <option value="5+ Experience">5+ Experience</option>
+                {categoryFilter.map((element, index) => (
+                  <option key={index} value={element}>
+                    {element}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="sm:col-span-2">
