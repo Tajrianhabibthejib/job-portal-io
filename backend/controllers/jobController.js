@@ -1,4 +1,5 @@
 import jobModel from "../models/jobModel.js";
+import userModel from "../models/userModel.js";
 
 export const createJob = async (req, res) => {
   try {
@@ -16,7 +17,6 @@ export const createJob = async (req, res) => {
       },
     } = req.body;
 
-    // Validate all fields
     if (
       !title ||
       !description ||
@@ -34,7 +34,9 @@ export const createJob = async (req, res) => {
       });
     }
 
-    // Create a new job
+    const userId = req.user.id;
+    console.log(userId);
+
     const newJob = await jobModel.create({
       title,
       description,
@@ -47,19 +49,26 @@ export const createJob = async (req, res) => {
         companyEmail,
         companyOrigin,
       },
+      postedBy: userId,
     });
+
+    const user = await userModel.findById(userId);
+    if (user) {
+      user.jobs.push(newJob._id);
+      await user.save();
+    }
 
     return res.status(201).json({
       success: true,
       message: "Job Created Successfully",
-      job: newJob, // Optionally include the created job
+      job: newJob,
     });
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
-      error: error.message, // Optional for debugging
+      error: error.message,
     });
   }
 };
