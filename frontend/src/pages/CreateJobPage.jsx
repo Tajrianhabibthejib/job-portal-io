@@ -2,7 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { categoryFilter } from "../constants/Filter";
+import {
+  salaryFilter,
+  companyOriginFilter,
+  categoryFilter,
+} from "../constants/Filter";
 
 const CreateJobPage = () => {
   const [jobTitle, setJobTitle] = useState("");
@@ -16,25 +20,6 @@ const CreateJobPage = () => {
   const [country, setCountry] = useState("United States of America");
 
   const navigate = useNavigate();
-
-  const countries = [
-    "United States of America",
-    "United Kingdom",
-    "Canada",
-    "Australia",
-    "Germany",
-    "France",
-    "India",
-    "China",
-    "Japan",
-    "Russia",
-    "Brazil",
-    "Italy",
-    "Spain",
-    "South Korea",
-    "Mexico",
-    "South Africa",
-  ];
 
   useEffect(() => {
     const getResponse = async () => {
@@ -145,10 +130,13 @@ const CreateJobPage = () => {
                 onChange={(e) => setSalary(e.target.value)}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               >
-                <option value="25,000+">25,000+</option>
-                <option value="50,000+">50,000+</option>
-                <option value="70,000+">70,000+</option>
-                <option value="100,000+">100,000+</option>
+                {salaryFilter.map((element, index) => {
+                  return (
+                    <option key={index} value={element}>
+                      {element}
+                    </option>
+                  );
+                })}
               </select>
             </div>
             <div>
@@ -254,7 +242,7 @@ const CreateJobPage = () => {
                 onChange={(e) => setCountry(e.target.value)}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               >
-                {countries.map((element, index) => (
+                {companyOriginFilter.map((element, index) => (
                   <option key={index} value={element}>
                     {element}
                   </option>
