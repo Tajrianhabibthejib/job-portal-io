@@ -1,128 +1,124 @@
-# Job Portal - Full Stack Application
+# Job Portal IO - Full Stack Application
 
-Welcome to the Job Portal repository! This project is a full-stack application built with **React** and **Vite** for the frontend, and **Express.js** with **MongoDB** for the backend. The frontend is styled using **TailwindCSS**, and the application includes features like user registration, authentication, and job listings. Below, you'll find all the information you need to get started with the project.
-
----
-
-## **Table of Contents**
-
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Running the Project](#running-the-project)
-- [Project Structure](#project-structure)
-  - [Frontend Structure](#frontend-structure)
-  - [Backend Structure](#backend-structure)
-- [Scripts](#scripts)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
+Welcome to **Job Portal IO**, a full-stack application designed to connect job seekers with opportunities in the React and React Native ecosystem. This project is built with **React** and **Vite** on the frontend, and **Express.js** with **MongoDB** on the backend. Below, you'll find everything you need to get started with the project.
 
 ---
 
-## **Features**
+## Table of Contents
 
-- **User Registration**: Users can register with a unique username, email, and password.
-- **Authentication**: JSON Web Tokens (JWT) are used for secure user authentication.
-- **Job Listings**: Display a list of available jobs with details.
-- **Responsive Design**: TailwindCSS ensures a responsive and modern UI.
-- **Fast Development**: Built with Vite for lightning-fast development and hot module replacement (HMR).
-- **Validation**: Express-validator is used for server-side validation of user inputs.
-- **Database**: MongoDB is used for storing user data.
-
----
-
-## **Technologies Used**
-
-- **Frontend**:
-  - React
-  - Vite
-  - TailwindCSS
-  - Axios (for API calls)
-  - React Router DOM (for routing)
-- **Backend**:
-  - Express.js
-  - MongoDB (via Mongoose)
-  - JSON Web Tokens (JWT) for authentication
-  - Bcrypt for password hashing
-  - Express-validator for input validation
-- **Tools**:
-  - ESLint (for linting)
-  - PostCSS (for CSS processing)
-  - Autoprefixer (for browser compatibility)
-  - Nodemon (for backend development)
+1. [Features](#features)
+2. [Technologies Used](#technologies-used)
+3. [Getting Started](#getting-started)
+   - [Prerequisites](#prerequisites)
+   - [Installation](#installation)
+   - [Running the Project](#running-the-project)
+4. [Project Structure](#project-structure)
+   - [Frontend Structure](#frontend-structure)
+   - [Backend Structure](#backend-structure)
+5. [API Endpoints](#api-endpoints)
+6. [Contributing](#contributing)
+7. [License](#license)
 
 ---
 
-## **Getting Started**
+## Features
 
-### **Prerequisites**
+- **User Registration & Login**: Secure user authentication with JWT.
+- **Job Listings**: Create, view, and filter job postings.
+- **Responsive Design**: Modern and mobile-friendly UI with TailwindCSS.
+- **Validation**: Server-side validation for user inputs.
+- **Fast Development**: Built with Vite for fast builds and hot module replacement.
 
-Before you begin, ensure you have the following installed:
+---
 
-- Node.js (v16 or higher)
-- npm or yarn (package manager)
-- MongoDB (either locally or a cloud instance like MongoDB Atlas)
+## Technologies Used
 
-### **Installation**
+### Frontend:
 
-1. Clone the repository:
+- **React**: Component-based UI library.
+- **Vite**: Fast development server and build tool.
+- **TailwindCSS**: Utility-first CSS framework.
+- **React Router DOM**: For navigation and routing.
+- **Axios**: For API requests.
+
+### Backend:
+
+- **Express.js**: Web framework for Node.js.
+- **MongoDB**: NoSQL database for storing data.
+- **Mongoose**: MongoDB object modeling.
+- **JWT**: Secure user authentication.
+- **Bcrypt**: Password hashing.
+- **Express Validator**: Input validation.
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- **Node.js** (v16 or higher)
+- **npm** or **yarn** (package manager)
+- **MongoDB** (local or cloud instance like MongoDB Atlas)
+
+---
+
+### Installation
+
+1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/your-username/job-portal-io.git
-   ```
-2. Navigate to the project directory:
-   ```bash
    cd job-portal-io
    ```
-3. Install frontend dependencies:
-   ```bash
-   cd frontend
-   npm install
-   ```
-4. Install backend dependencies:
-   ```bash
-   cd ../backend
-   npm install
-   ```
 
-### **Running the Project**
+2. **Install dependencies**:
 
-1. **Start the Backend Server**:
-
-   - Navigate to the `backend` directory:
+   - Frontend:
      ```bash
-     cd backend
+     cd frontend
+     npm install
      ```
-   - Create a `.env` file in the `backend` directory and add the following environment variables:
+   - Backend:
+     ```bash
+     cd ../backend
+     npm install
+     ```
+
+3. **Set up environment variables**:
+   - Create a `.env` file in the `backend` directory:
      ```env
-     MONGODB_URI=mongodb://localhost:27017/job-portal
+     MONGO_URI=mongodb://localhost:27017/job-portal
      JWT_SECRET=your_jwt_secret_key
      PORT=3000
      ```
-   - Start the backend server:
-     ```bash
-     npm start
-     ```
-   - The backend server will run on `http://localhost:3000`.
-
-2. **Start the Frontend Development Server**:
-   - Navigate to the `frontend` directory:
-     ```bash
-     cd ../frontend
-     ```
-   - Start the frontend development server:
-     ```bash
-     npm run dev
-     ```
-   - The frontend will be available at `http://localhost:5173`.
 
 ---
 
-## **Project Structure**
+### Running the Project
 
-### **Frontend Structure**
+1. **Start the Backend**:
+
+   ```bash
+   cd backend
+   npm start
+   ```
+
+   The backend will run on `http://localhost:3000`.
+
+2. **Start the Frontend**:
+   ```bash
+   cd ../frontend
+   npm run dev
+   ```
+   The frontend will be available at `http://localhost:5173`.
+
+---
+
+## Project Structure
+
+### Frontend Structure
 
 ```
 frontend/
@@ -132,14 +128,57 @@ frontend/
 │   ├── main.jsx          # Entry point
 │   ├── index.css         # Global styles
 │   ├── layouts/          # Layout components
-│   ├── pages/            # Page components
-│   ├── components/       # Reusable components
-│   └── ...               # Other utilities
-├── .eslintrc.js          # ESLint configuration
-├── postcss.config.js     # PostCSS configuration
+│   ├── pages/            # Page components (e.g., HomePage, LoginPage)
+│   ├── components/       # Reusable components (e.g., Navbar, Footer)
+│   ├── constants/        # Static data (e.g., filters)
+│   └── assets/           # Images and other assets
 ├── tailwind.config.js    # TailwindCSS configuration
 ├── vite.config.js        # Vite configuration
 └── package.json          # Project dependencies and scripts
 ```
 
-### \*\*
+### Backend Structure
+
+```
+backend/
+├── config/               # Configuration files (e.g., database connection)
+├── controllers/          # Business logic for routes
+├── middlewares/          # Middleware functions (e.g., authentication)
+├── models/               # Mongoose schemas (e.g., User, Job)
+├── routes/               # API route handlers
+├── .env                  # Environment variables
+├── index.js              # Entry point for the server
+└── package.json          # Project dependencies and scripts
+```
+
+---
+
+## API Endpoints
+
+### User Routes
+
+- **POST** `/api/user/register`: Register a new user.
+- **POST** `/api/user/login`: Log in a user.
+- **POST** `/api/user/logout`: Log out a user.
+
+### Job Routes
+
+- **POST** `/api/job/create`: Create a new job (requires authentication).
+- **GET** `/api/job/salary/:salary/category/:category/country/:country`: Filter jobs by salary, category, and country.
+
+### General Routes
+
+- **GET** `/`: Check if the user is authenticated.
+- **GET** `/get-jobs`: Fetch all jobs.
+
+---
+
+## Contributing
+
+Contributions are welcome! Feel free to fork the repository and submit a pull request.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
