@@ -40,7 +40,10 @@ const JobList = ({ jobs }) => {
                   </span>
                 </div>
                 <h2 className="mb-2 text-xl font-semibold text-gray-900">
-                  <a href="#" className="transition-all hover:text-blue-600">
+                  <a
+                    href={`/jobs/read-more/${element._id}`}
+                    className="transition-all hover:text-blue-600"
+                  >
                     {element.title}
                   </a>
                 </h2>

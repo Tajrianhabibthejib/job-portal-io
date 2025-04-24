@@ -27,7 +27,7 @@ router.get("/get-jobs", async (req, res) => {
   }
 });
 
-router.get("/jobs", isAuthenticated, async (req, res, next) => {
+router.get("/jobs", async (req, res, next) => {
   try {
     const job = await jobModel.find();
     const user = req.user;
@@ -37,7 +37,6 @@ router.get("/jobs", isAuthenticated, async (req, res, next) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
-
 
 router.get("/jobs/read-more/:jobId", async (req, res) => {
   try {

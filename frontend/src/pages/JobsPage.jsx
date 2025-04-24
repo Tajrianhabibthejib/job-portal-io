@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import Select from "../components/Select";
+import { Buffer } from "buffer";
 import {
   salaryFilter,
   categoryFilter,
@@ -66,6 +67,14 @@ const JobsPage = () => {
     };
     getResponse();
   }, [navigate]);
+
+  const truncateWords = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
 
   return (
     <section className="min-h-screen p-8 bg-gradient-to-b from-blue-50 to-gray-100">
@@ -143,13 +152,20 @@ const JobsPage = () => {
                 </Link>
               </h2>
               <p className="mb-5 text-sm text-gray-600">
-                {element.description}
+                {truncateWords(element.description, 20)}
               </p>
+
               <div className="flex items-center justify-between mt-4">
                 <div className="flex items-center space-x-4">
                   <img
                     className="w-10 h-10 rounded-full"
-                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+                    src={
+                      element.company?.companyImage
+                        ? `data:image/jpeg;base64,${Buffer.from(
+                            element.company.companyImage
+                          ).toString("base64")}`
+                        : "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+                    }
                     alt="Company avatar"
                   />
                   <span className="text-sm font-medium text-gray-800">

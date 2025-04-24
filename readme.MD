@@ -1,184 +1,97 @@
-# Job Portal IO - Full Stack Application
+# Job Portal IO
 
-Welcome to **Job Portal IO**, a full-stack application designed to connect job seekers with opportunities in the React and React Native ecosystem. This project is built with **React** and **Vite** on the frontend, and **Express.js** with **MongoDB** on the backend. Below, you'll find everything you need to get started with the project.
-
----
-
-## Table of Contents
-
-1. [Features](#features)
-2. [Technologies Used](#technologies-used)
-3. [Getting Started](#getting-started)
-   - [Prerequisites](#prerequisites)
-   - [Installation](#installation)
-   - [Running the Project](#running-the-project)
-4. [Project Structure](#project-structure)
-   - [Frontend Structure](#frontend-structure)
-   - [Backend Structure](#backend-structure)
-5. [API Endpoints](#api-endpoints)
-6. [Contributing](#contributing)
-7. [License](#license)
-
----
+Job Portal IO is a full-stack web application designed to connect job seekers with job providers. It features a React-based frontend and an Express.js backend, with MongoDB as the database.
 
 ## Features
 
-- **User Registration & Login**: Secure user authentication with JWT.
-- **Job Listings**: Create, view, and filter job postings.
-- **Responsive Design**: Modern and mobile-friendly UI with TailwindCSS.
-- **Validation**: Server-side validation for user inputs.
-- **Fast Development**: Built with Vite for fast builds and hot module replacement.
+### Frontend
 
----
+- **React**: Built with React for a dynamic and responsive user interface.
+- **Routing**: Uses `react-router-dom` for navigation between pages.
+- **State Management**: Utilizes React hooks for state management.
+- **Styling**: Styled with Tailwind CSS for a modern and responsive design.
+- **Notifications**: Integrated with `react-toastify` for user notifications.
+- **Components**:
+  - `Navbar`: Navigation bar for easy access to pages.
+  - `Hero`: Landing page section for showcasing the platform.
+  - `JobList`: Displays a list of jobs.
+  - `Footer`: Footer section with additional links.
+  - `Select`: Dropdown component for filtering jobs.
 
-## Technologies Used
+### Backend
 
-### Frontend:
-
-- **React**: Component-based UI library.
-- **Vite**: Fast development server and build tool.
-- **TailwindCSS**: Utility-first CSS framework.
-- **React Router DOM**: For navigation and routing.
-- **Axios**: For API requests.
-
-### Backend:
-
-- **Express.js**: Web framework for Node.js.
-- **MongoDB**: NoSQL database for storing data.
-- **Mongoose**: MongoDB object modeling.
-- **JWT**: Secure user authentication.
-- **Bcrypt**: Password hashing.
-- **Express Validator**: Input validation.
-
----
-
-## Getting Started
-
-### Prerequisites
-
-Ensure you have the following installed:
-
-- **Node.js** (v16 or higher)
-- **npm** or **yarn** (package manager)
-- **MongoDB** (local or cloud instance like MongoDB Atlas)
-
----
-
-### Installation
-
-1. **Clone the repository**:
-
-   ```bash
-   git clone https://github.com/your-username/job-portal-io.git
-   cd job-portal-io
-   ```
-
-2. **Install dependencies**:
-
-   - Frontend:
-     ```bash
-     cd frontend
-     npm install
-     ```
-   - Backend:
-     ```bash
-     cd ../backend
-     npm install
-     ```
-
-3. **Set up environment variables**:
-   - Create a `.env` file in the `backend` directory:
-     ```env
-     MONGO_URI=mongodb://localhost:27017/job-portal
-     JWT_SECRET=your_jwt_secret_key
-     PORT=3000
-     ```
-
----
-
-### Running the Project
-
-1. **Start the Backend**:
-
-   ```bash
-   cd backend
-   npm start
-   ```
-
-   The backend will run on `http://localhost:3000`.
-
-2. **Start the Frontend**:
-   ```bash
-   cd ../frontend
-   npm run dev
-   ```
-   The frontend will be available at `http://localhost:5173`.
-
----
+- **Express.js**: Backend framework for handling API requests.
+- **Authentication**: JWT-based authentication with middleware for protected routes.
+- **File Uploads**: Supports file uploads using Multer.
+- **Validation**: Validates user input with `express-validator`.
+- **Database**: MongoDB for storing user and job data.
+- **API Endpoints**:
+  - `/api/user/register`: Register a new user.
+  - `/api/user/login`: Login an existing user.
+  - `/api/user/logout`: Logout the user.
+  - `/api/job/create`: Create a new job (protected route).
+  - `/api/job/salary/:salary/category/:category/country/:country`: Filter jobs.
 
 ## Project Structure
 
-### Frontend Structure
+### Frontend
 
-```
-frontend/
-├── public/               # Static assets
-├── src/                  # Source code
-│   ├── App.jsx           # Main application component
-│   ├── main.jsx          # Entry point
-│   ├── index.css         # Global styles
-│   ├── layouts/          # Layout components
-│   ├── pages/            # Page components (e.g., HomePage, LoginPage)
-│   ├── components/       # Reusable components (e.g., Navbar, Footer)
-│   ├── constants/        # Static data (e.g., filters)
-│   └── assets/           # Images and other assets
-├── tailwind.config.js    # TailwindCSS configuration
-├── vite.config.js        # Vite configuration
-└── package.json          # Project dependencies and scripts
-```
+**React**: Built with React for a dynamic and responsive user interface.
 
-### Backend Structure
+- **Routing**: Uses `react-router-dom` for navigation between pages.
+- **State Management**: Utilizes React hooks for state management.
+- **Styling**: Styled with Tailwind CSS for a modern and responsive design.
+- **Notifications**: Integrated with `react-toastify` for user notifications.
+- **Components**:
+  - `Navbar`: Navigation bar for easy access to pages.
+  - `Hero`: Landing page section for showcasing the platform.
+  - `JobList`: Displays a list of jobs.
+  - `Footer`: Footer section with additional links.
+  - `Select`: Dropdown component for filtering jobs.
 
-```
-backend/
-├── config/               # Configuration files (e.g., database connection)
-├── controllers/          # Business logic for routes
-├── middlewares/          # Middleware functions (e.g., authentication)
-├── models/               # Mongoose schemas (e.g., User, Job)
-├── routes/               # API route handlers
-├── .env                  # Environment variables
-├── index.js              # Entry point for the server
-└── package.json          # Project dependencies and scripts
-```
+### Backend
 
----
+- **Express.js**: Backend framework for handling API requests.
+- **Authentication**: JWT-based authentication with middleware for protected routes.
+- **File Uploads**: Supports file uploads using Multer.
+- **Validation**: Validates user input with `express-validator`.
+- **Database**: MongoDB for storing user and job data.
+- **API Endpoints**:
+  - `/api/user/register`: Register a new user.
+  - `/api/user/login`: Login an existing user.
+  - `/api/user/logout`: Logout the user.
+  - `/api/job/create`: Create a new job (protected route).
+  - `/api/job/salary/:salary/category/:category/country/:country`: Filter jobs.
 
-## API Endpoints
+## Project Structure
 
-### User Routes
+### Frontend
 
-- **POST** `/api/user/register`: Register a new user.
-- **POST** `/api/user/login`: Log in a user.
-- **POST** `/api/user/logout`: Log out a user.
+frontend/ ├── public/ │ └── vite.svg ├── src/ │ ├── components/ │ │ ├── Footer.jsx │ │ ├── Hero.jsx │ │ ├── JobList.jsx │ │ ├── Navbar.jsx │ │ └── Select.jsx │ ├── constants/ │ │ └── Filter.jsx │ ├── layouts/ │ │ └── MainLayout.jsx │ ├── pages/ │ │ ├── AboutPage.jsx │ │ ├── CreateJobPage.jsx │ │ ├── ErrorPage.jsx │ │ ├── HomePage.jsx │ │ ├── JobsPage.jsx │ │ ├── LoginUserPage.jsx │ │ ├── ReadMorePage.jsx │ │ └── RegisterUserPage.jsx │ ├── App.jsx │ ├── index.css │ ├── main.jsx │ └── assets/ │ └── react.svg ├── index.html ├── package.json ├── postcss.config.js ├── tailwind.config.js └── vite.config.js
 
-### Job Routes
+### Backend
 
-- **POST** `/api/job/create`: Create a new job (requires authentication).
-- **GET** `/api/job/salary/:salary/category/:category/country/:country`: Filter jobs by salary, category, and country.
+backend/ ├── config/ │ └── database.js ├── controllers/ │ ├── jobController.js │ └── userController.js ├── middlewares/ │ ├── isAutheticated.js │ ├── multer.js │ └── userMiddleware.js ├── models/ │ ├── jobModel.js │ └── userModel.js ├── routes/ │ ├── indexRouter.js │ ├── jobRouter.js │ └── userRouter.js ├── .env ├── index.js └── package.json
 
-### General Routes
+## Installation
 
-- **GET** `/`: Check if the user is authenticated.
-- **GET** `/get-jobs`: Fetch all jobs.
+### Prerequisites
 
----
+- Node.js
+- MongoDB
 
-## Contributing
+### Steps
 
-Contributions are welcome! Feel free to fork the repository and submit a pull request.
+1. Clone the repository:
 
----
+   ```bash
+   git clone https://github.com/your-repo/job-portal-io.git
+   cd job-portal-io
 
-## License
+   cd backend
+   npm install
+   ```
 
-This project is licensed under the MIT License.
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   PORT=3000

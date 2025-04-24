@@ -3,18 +3,19 @@ import userModel from "../models/userModel.js";
 
 export const createJob = async (req, res) => {
   try {
+    const companyImage = req.file.buffer; // Assuming multer is handling the file upload
+    console.log(companyImage);
+
     const {
       title,
       description,
       salary,
       category,
-      company: {
-        companyName,
-        companyDescription,
-        companyPhone,
-        companyEmail,
-        companyOrigin,
-      },
+      companyName, // Flattened fields
+      companyDescription,
+      companyPhone,
+      companyEmail,
+      companyOrigin,
     } = req.body;
 
     if (
@@ -43,6 +44,7 @@ export const createJob = async (req, res) => {
       salary,
       category,
       company: {
+        companyImage: companyImage, // Convert buffer to base64 string
         companyName,
         companyDescription,
         companyPhone,

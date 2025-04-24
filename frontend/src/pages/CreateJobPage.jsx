@@ -13,6 +13,7 @@ const CreateJobPage = () => {
   const [jobDescription, setJobDescription] = useState("");
   const [salary, setSalary] = useState("25,000+");
   const [category, setCategory] = useState("Fresher");
+  const [companyImage, setCompanyImage] = useState(null); // Added for file upload
   const [companyName, setCompanyName] = useState("");
   const [companyDescription, setCompanyDescription] = useState("");
   const [companyPhone, setCompanyPhone] = useState("");
@@ -38,29 +39,29 @@ const CreateJobPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const jobData = {
-        title: jobTitle,
-        description: jobDescription,
-        salary,
-        category,
-        company: {
-          companyName,
-          companyDescription,
-          companyPhone,
-          companyEmail,
-          companyOrigin: country,
-        },
-      }; // Add this line for debugging
+      const formData = new FormData();
+      formData.append("companyImage", companyImage);
+      formData.append("title", jobTitle);
+      formData.append("description", jobDescription);
+      formData.append("salary", salary);
+      formData.append("category", category);
+      formData.append("companyName", companyName); // Flattened company fields
+      formData.append("companyDescription", companyDescription);
+      formData.append("companyPhone", companyPhone);
+      formData.append("companyEmail", companyEmail);
+      formData.append("companyOrigin", country);
+
       const res = await axios.post(
         "http://localhost:3000/api/job/create",
-        jobData, // Send jobData directly
+        formData,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
-          withCredentials: true, // Ensure cookies or other credentials are sent
+          withCredentials: true,
         }
-      ); // Handle success response
+      );
+
       if (res.data.success === true) {
         toast.success(res.data.message);
         navigate("/jobs");
@@ -71,8 +72,6 @@ const CreateJobPage = () => {
         error.response ? error.response.data : error.message
       );
     }
-
-    // Perform any API call or further actions here.
   };
 
   return (
@@ -81,8 +80,22 @@ const CreateJobPage = () => {
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
           Add a new job
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+            <div>
+              <label
+                htmlFor="companyImage"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Company Image:
+              </label>
+              <input
+                type="file"
+                id="companyImage"
+                onChange={(e) => setCompanyImage(e.target.files[0])} // Update state with the selected file
+                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              />
+            </div>
             <div className="sm:col-span-2">
               <label
                 htmlFor="name"
