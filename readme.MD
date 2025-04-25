@@ -71,7 +71,6 @@ frontend/
 ├── tailwind.config.js
 └── vite.config.js
 ```
-
 ### Backend
 
 ```
@@ -97,6 +96,8 @@ backend/
 └── package.json
 ```
 
+
+
 ## Installation
 
 ### Prerequisites
@@ -105,48 +106,36 @@ backend/
 - MongoDB
 
 ### Steps
-
 1. Clone the repository:
 
-   ```bash
+```bash
    git clone https://github.com/your-repo/job-portal-io.git
    cd job-portal-io
    ```
-
 2. Install dependencies for the backend:
-
 ```bash
   cd backend
   npm install
-```
-
+``` 
 3. Set up environment variables in backend/.env:
-
 ```
   MONGO_URI=your_mongodb_connection_string
   JWT_SECRET=your_jwt_secret
   PORT=3000
 ```
-
 4. Start the backend server:
-
 ```
   npm start
 ```
-
 5. Install dependencies for the frontend:
-
 ```
   cd ../frontend
   npm install
 ```
-
 6. Start the frontend development server:
-
 ```
   npm run dev
 ```
-
 7. Open the application in your browser at http://localhost:5173.
 
 ## 🚀 Usage
@@ -162,21 +151,18 @@ backend/
 ## 🛠️ Technologies Used
 
 ### 💻 Frontend
-
 - React
 - Tailwind CSS
 - React Router
 - React Toastify
 
 ### 🧠 Backend
-
 - Express.js
 - MongoDB
 - JWT (JSON Web Tokens)
 - Multer
 
 ### 🧰 Build Tools
-
 - Vite
 
 ---
@@ -184,3 +170,6 @@ backend/
 ## 📄 License
 
 This project is licensed under the **MIT License**.
+
+
+
