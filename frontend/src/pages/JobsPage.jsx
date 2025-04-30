@@ -112,9 +112,9 @@ const JobsPage = () => {
 
       <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {Array.isArray(jobs) && jobs.length > 0 ? (
-          jobs.map((element, index) => (
-            <JobCard element={element} key={index} />
-          ))
+          [...jobs]
+            .reverse()
+            .map((element, index) => <JobCard element={element} key={index} />)
         ) : (
           <p className="p-4 font-semibold text-center text-white bg-gray-600 rounded-md col-span-full">
             No jobs found.
