@@ -1,7 +1,9 @@
 import React from "react";
 import dayjs from "dayjs";
+import { Buffer } from "buffer";
 
 const JobList = ({ jobs }) => {
+  console.log(jobs)
   const hasJobs = jobs && jobs.length > 0;
 
   const truncateWords = (text, wordLimit) => {
@@ -65,7 +67,13 @@ const JobList = ({ jobs }) => {
                     <div className="flex items-center space-x-4">
                       <img
                         className="w-10 h-10 rounded-full"
-                        src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+                        src={
+                          element.company?.companyImage
+                            ? `data:image/jpeg;base64,${Buffer.from(
+                                element.company.companyImage
+                              ).toString("base64")}`
+                            : "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+                        }
                         alt="Company avatar"
                       />
                       <span className="text-sm font-medium text-gray-800">

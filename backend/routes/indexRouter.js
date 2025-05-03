@@ -44,6 +44,7 @@ router.get("/jobs/read-more/:jobId", async (req, res) => {
     const findJob = await jobModel.findById({
       _id: jobId,
     });
+
     if (findJob) {
       return res.status(200).json({
         success: true,
