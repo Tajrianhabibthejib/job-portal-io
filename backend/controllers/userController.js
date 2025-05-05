@@ -103,3 +103,34 @@ export const logoutUser = async (req, res) => {
     });
   }
 };
+
+export const getUser = async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(400).json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await userModel.findById(decoded.id).select("-password");
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+    console.log(user);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};

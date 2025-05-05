@@ -3,12 +3,12 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Select from "../components/Select";
+import JobCard from "../components/JobCard";
 import {
   salaryFilter,
   categoryFilter,
   companyOriginFilter,
 } from "../constants/Filter";
-import JobCard from "../components/JobCard";
 
 const JobsPage = () => {
   const [salary, setSalary] = useState("25,000+");
@@ -28,25 +28,11 @@ const JobsPage = () => {
           withCredentials: true,
         }
       );
-
-      console.log("Full API response:", res.data);
-
-      const jobsData = res.data.job; // <-- Extract the actual job object
-
-      // Check if jobsData is an array or an object and handle accordingly
-      if (Array.isArray(jobsData)) {
-        setJobs(jobsData);
-      } else if (jobsData) {
-        setJobs([jobsData]); // Wrap single job in array for consistent rendering
-      } else {
-        setJobs([]); // If no job data returned, set jobs as an empty array
-      }
+      const jobsData = res.data.job;
+      setJobs(Array.isArray(jobsData) ? jobsData : []);
     } catch (error) {
-      console.log(error);
-      const errorMessage =
-        error?.response?.data?.message || "Failed to filter jobs.";
-      toast.error(errorMessage);
-      setJobs([]); // Reset the jobs if there was an error
+      toast.error(error?.response?.data?.message || "Failed to filter jobs.");
+      setJobs([]);
     }
   };
 
@@ -57,7 +43,6 @@ const JobsPage = () => {
           withCredentials: true,
         });
         const result = res.data.job;
-        console.log(result);
         setJobs(Array.isArray(result) ? result : []);
       } catch (error) {
         toast.error(error?.response?.data?.message || "Error loading jobs.");
@@ -71,7 +56,6 @@ const JobsPage = () => {
     <section className="min-h-screen p-8 bg-gradient-to-b from-blue-50 to-gray-100">
       <div className="container p-6 mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-900">
         <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-8 lg:flex-nowrap">
-          {/* Filter Selects */}
           <Select
             filter={salaryFilter}
             state={salary}
@@ -90,7 +74,6 @@ const JobsPage = () => {
             setState={setCompanyOrigin}
             className="w-full sm:min-w-[200px] bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          {/* Filter Button */}
           <button
             type="submit"
             onClick={handleFilter}
@@ -111,10 +94,10 @@ const JobsPage = () => {
       </div>
 
       <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-        {Array.isArray(jobs) && jobs.length > 0 ? (
+        {jobs.length > 0 ? (
           [...jobs]
             .reverse()
-            .map((element, index) => <JobCard element={element} key={index} />)
+            .map((job) => <JobCard key={job._id} element={job} />)
         ) : (
           <p className="p-4 font-semibold text-center text-white bg-gray-600 rounded-md col-span-full">
             No jobs found.

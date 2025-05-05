@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    bio: {
+      type: String,
+      default: "I am a recruiter",
+    },
     password: {
       type: String,
       required: true,

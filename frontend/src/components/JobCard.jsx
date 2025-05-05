@@ -49,7 +49,7 @@ const JobCard = ({ element }) => {
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center space-x-4">
             <img
-              className="w-10 h-10 rounded-full"
+              className="object-contain w-10 h-10 rounded-full"
               src={
                 element.company?.companyImage
                   ? `data:image/jpeg;base64,${Buffer.from(

@@ -14,6 +14,7 @@ const Navbar = () => {
         const res = await axios.get("http://localhost:3000/", {
           withCredentials: true,
         });
+        console.log(res);
         if (res.data.success === true) {
           setIsLoggedIn(true);
         } else if (res.data.message === false) {
@@ -60,21 +61,12 @@ const Navbar = () => {
         <li>
           <Link to="/contact">Contact</Link>
         </li>
-        {isLoggedIn ? (
-          <>
-            <li>
-              <Link to={"/Jobs"}>Jobs</Link>
-            </li>
-            <li>
-              <button onClick={handleLogout}>Logout</button>
-            </li>
-          </>
-        ) : (
-          <>
-            <Link to={"/Jobs"}>Jobs</Link>
-            <Link to={"/log-in"}>Login</Link>
-          </>
-        )}
+        <li>
+          <Link to={"/Jobs"}>Jobs</Link>
+        </li>
+        <li>
+          <Link to="/profile">Profile</Link>
+        </li>
       </ul>
     </nav>
   );
