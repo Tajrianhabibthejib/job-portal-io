@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   useEffect(() => {
     const getData = async () => {
@@ -10,18 +12,39 @@ const ProfilePage = () => {
         const res = await axios.get("http://localhost:3000/api/user/profile", {
           withCredentials: true,
         });
-        if (res.data.success === false) {
-          console.log(res.data.message);
-          return;
+        if (res.data.success === true) {
+          setData(res.data.user);
+          toast.success(`Welcome to your profile ${res.data.user.username} :)`);
+        } else {
+          toast.error("Failed to fetch user data");
         }
-        setData(res.data.user);
-        console.log(res.data);
       } catch (error) {
+        if (error.response.data.success === false) {
+          navigate("/log-in");
+        }
         console.log(error.message);
       }
     };
     getData();
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/user/logout",
+        {},
+        { withCredentials: true }
+      );
+      if (res.data.success === true) {
+        toast.success("Logout successful");
+        navigate("/log-in");
+      } else {
+        toast.error("Logout failed");
+      }
+    } catch (error) {
+      toast.error("An error occurred during logout");
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen p-6 bg-gradient-to-br from-slate-100 to-slate-200">
@@ -60,8 +83,18 @@ const ProfilePage = () => {
               </span>
             </div>
             <div className="flex items-center gap-3 mt-6">
-              <Link to={'#'} className="p-3 bg-gray-300 rounded-md">Edit</Link>
-              <Link to={'#'} className="p-3 bg-gray-300 rounded-md">Logout</Link>
+              <Link
+                to={`/edit-user/${data.username}`}
+                className="p-3 bg-gray-300 rounded-md"
+              >
+                Edit
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="p-3 bg-gray-300 rounded-md"
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>

@@ -134,3 +134,20 @@ export const getUser = async (req, res) => {
     });
   }
 };
+
+export const editUser = async (req, res) => {
+  const { username, bio } = req.body;
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(400).json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const findUser = await userModel.findByIdAndUpdate(decoded.id, {
+    username,
+    bio,
+  });
+  console.log(findUser);
+};

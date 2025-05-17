@@ -3,6 +3,7 @@ import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import JobCard from "../components/JobCard";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const HomePage = () => {
   const [jobs, setJobs] = useState([]);

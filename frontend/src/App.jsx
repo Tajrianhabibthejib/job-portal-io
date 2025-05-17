@@ -16,6 +16,7 @@ import ErrorPage from "./pages/errorPage";
 import ReadMorePage from "./pages/ReadMorePage";
 import AboutPage from "./pages/AboutPage";
 import ProfilePage from "./pages/ProfilePage";
+import EditUserPage from "./pages/EditUserPage";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/jobs" element={<JobsPage />} />
         <Route path={`/jobs/read-more/:jobId`} element={<ReadMorePage />} />
         <Route path={`/Profile`} element={<ProfilePage />} />
+        <Route path={`/edit-user/:username`} element={<EditUserPage />} />
 
         <Route path="*" element={<ErrorPage />} />
       </Route>

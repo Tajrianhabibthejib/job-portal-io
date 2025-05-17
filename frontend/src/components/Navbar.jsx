@@ -14,7 +14,6 @@ const Navbar = () => {
         const res = await axios.get("http://localhost:3000/", {
           withCredentials: true,
         });
-        console.log(res);
         if (res.data.success === true) {
           setIsLoggedIn(true);
         } else if (res.data.message === false) {
